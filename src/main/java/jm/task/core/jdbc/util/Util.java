@@ -15,12 +15,12 @@ public class Util {
     private static final String CONNECTIONURL = "jdbc:mysql://localhost:3306/testbase"; // ссылка из подключения
 
 
-    public static Connection getConnection()  {
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASS);//куда передаем юрл
-            System.out.println("Коннект есть");
+            //System.out.println("Коннект есть");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

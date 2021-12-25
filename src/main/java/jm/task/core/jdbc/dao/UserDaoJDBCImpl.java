@@ -8,32 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private  Connection connection;
+    private Connection connection;
 
-    public UserDaoJDBCImpl(){
+    public UserDaoJDBCImpl() {
     }
 
     public void createUsersTable() {   // создать таблицу юзеров
         try {
             connection = Util.getConnection();
             Statement statement = connection.createStatement();
-            statement.executeUpdate("CREATE TABLE test1"
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS test1"
                     + "(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(45), lastName VARCHAR(45), age INT) ");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void dropUsersTable() { // удалить юзеров
+    public void dropUsersTable() { // удалить таблицу
         try {
+            connection = Util.getConnection();
             Statement statement = connection.createStatement();
-            statement.executeUpdate("DROP TABLE test1");
+            statement.executeUpdate("DROP TABLE IF EXISTS test1");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
-
 
     public void saveUser(String name, String lastName, byte age) { // добавить юзеров
         try {
@@ -45,6 +45,8 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setByte(3, age);
 
             preparedStatement.executeUpdate();
+
+            System.out.println("User с именем – " + name + " добавлен в базу данных");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,7 +55,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) { // удалить по id
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM test1 WHERE id=?");
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("DELETE FROM test1 WHERE id=?");
 
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -84,10 +87,11 @@ public class UserDaoJDBCImpl implements UserDao {
         }
 
         return people;
-    }  //получить всех юзеров
+    }
 
-    public void cleanUsersTable() {
+    public void cleanUsersTable() { //убрать данные с табл
         try {
+            connection = Util.getConnection();
             Statement statement = connection.createStatement();
             statement.executeUpdate("TRUNCATE TABLE test1");
         } catch (SQLException e) {
@@ -95,7 +99,5 @@ public class UserDaoJDBCImpl implements UserDao {
         }
 
     }
-//    private Connection getConnection(){
-//
-//    }
+
 }
