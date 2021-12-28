@@ -1,8 +1,12 @@
 package jm.task.core.jdbc;
 
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
+import jm.task.core.jdbc.util.Util;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class Main {
 
@@ -14,9 +18,13 @@ public class Main {
 
 
     public static void main(String[] args) {
-        // userService.cleanUsersTable();
 
         userService.createUsersTable();
+        userService.dropUsersTable();
+
+        userService.cleanUsersTable();
+
+
 
         userService.saveUser(user1.getName(), user1.getLastName(), user1.getAge());
         userService.saveUser(user2.getName(), user2.getLastName(), user2.getAge());
@@ -24,10 +32,12 @@ public class Main {
 
 
         userService.getAllUsers();
-        userService.removeUserById(1);
+        userService.removeUserById(2);
 
         userService.cleanUsersTable();
-        userService.dropUsersTable();
+
+
+        userService.saveUser(user1.getName(), user1.getLastName(), user1.getAge());
 
     }
 }
